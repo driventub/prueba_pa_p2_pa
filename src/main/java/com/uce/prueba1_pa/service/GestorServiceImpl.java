@@ -4,11 +4,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.uce.prueba1_pa.modelo.Matricula;
 import com.uce.prueba1_pa.modelo.Propietario;
 import com.uce.prueba1_pa.modelo.Vehiculo;
+import com.uce.prueba1_pa.repository.IMatriculaRepo;
 
 @Service
 public class GestorServiceImpl implements IGestorService{
@@ -20,7 +22,17 @@ public class GestorServiceImpl implements IGestorService{
     private IVehiculoService vehiculoService;
 
     @Autowired
-    private IMatriculaService matriculaService;
+    private IMatriculaRepo matriculaRepo;
+
+    @Autowired
+    @Qualifier("ligera")
+    private IMatriculaService ligera;
+    
+    @Autowired
+    @Qualifier("pesada")
+    private IMatriculaService pesada;
+
+
 
     @Override
     public void matricularVehiculo(String cedula, String placa) {
@@ -36,25 +48,21 @@ public class GestorServiceImpl implements IGestorService{
         System.out.println();
         
         if (v.getTipo().equals("P")) {
-            valorMatricula = v.getPrecio().multiply(new BigDecimal("0.15"));
+            valorMatricula = this.pesada.calcular(v.getPrecio());
             
             
-            if(valorMatricula.compareTo(new BigDecimal("2000") )> 0){
-                valorMatricula = valorMatricula.multiply(new BigDecimal("0.07"));
-            }
+            
             m.setValor(valorMatricula);
-            this.matriculaService.ingresarMatricula(m);
+            this.matriculaRepo.insertar(m);
 
             
 
 
         }else if (v.getTipo().equals("L")) {
-            valorMatricula = v.getPrecio().multiply(new BigDecimal("0.10"));
-            if(valorMatricula.compareTo(new BigDecimal("2000") )> 0){
-                valorMatricula = valorMatricula.multiply(new BigDecimal("0.07"));
-            }
+            valorMatricula = this.ligera.calcular(v.getPrecio());
+            
             m.setValor(valorMatricula);
-            this.matriculaService.ingresarMatricula(m);
+            this.matriculaRepo.insertar(m);
 
             
         }else{
