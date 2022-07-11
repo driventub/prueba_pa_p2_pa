@@ -43,22 +43,22 @@ public class Prueba1PaApplication implements CommandLineRunner{
 
 		this.vehiculoService.ingresarVehiculo(vehiculo);
 
-		// 2.
-		vehiculo.setMarca("Ferrari");
-		vehiculo.setPrecio(new BigDecimal("20300"));
+		// // 2.
+		// vehiculo.setMarca("Ferrari");
+		// vehiculo.setPrecio(new BigDecimal("20300"));
 
-		this.vehiculoService.actualizar(vehiculo);
+		// this.vehiculoService.actualizar(vehiculo);
 
-		// 3.
-		propietario.setApellido("Alonso");
-		propietario.setCedula("176372857-8");
-		propietario.setFechaNacimiento(LocalDateTime.of(1975, 02,22,01,01,01));
-		propietario.setNombre("Fernando");
+		// // 3.
+		// propietario.setApellido("Alonso");
+		// propietario.setCedula("176372857-8");
+		// propietario.setFechaNacimiento(LocalDateTime.of(1975, 02,22,01,01,01));
+		// propietario.setNombre("Fernando");
 
-		this.propietarioService.ingresarPropietario(propietario);
+		// this.propietarioService.ingresarPropietario(propietario);
 
-		// 4.
-		this.gestorService.matricularVehiculo("176372857-8", "PPP-132");
+		// // 4.
+		// this.gestorService.matricularVehiculo("176372857-8", "PPP-132");
 
 		
 	}

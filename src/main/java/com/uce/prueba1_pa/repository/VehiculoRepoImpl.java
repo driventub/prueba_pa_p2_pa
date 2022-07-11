@@ -1,43 +1,55 @@
 package com.uce.prueba1_pa.repository;
 
-import java.math.BigDecimal;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
 import com.uce.prueba1_pa.modelo.Vehiculo;
 
 @Repository
-public class VehiculoRepoImpl implements IVehiculoRepo {
+@Transactional
+public class VehiculoRepoImpl implements IVehiculoRepo{
+	
+	
+	
+	
+	@PersistenceContext
+	private EntityManager e;
+	
+	
 
-    @Override
-    public void actualizar(Vehiculo c) {
-        
-        System.out.println("Vehiculo actualizado a: " + c);
 
-    }
+	@Override
+	public void actualizar(Vehiculo e) {
+		this.e.merge(e);
+		
+	}
+
+
+	@Override
+	public void insertar(Vehiculo e) {
+		this.e.persist(e);
+		
+	}
+
 
     @Override
     public Vehiculo buscar(String placa) {
-        System.out.println("Se busca la placa :" + placa);
-        Vehiculo c = new Vehiculo();
-        c.setMarca("Toyota");
-		c.setPlaca("PPP-132");
-		c.setPrecio(new BigDecimal("10300"));
-		c.setTipo("L");
-
-        return c;
+        Query jpqlQuery = this.e.createQuery("SELECT v FROM Vehiculo v WHERE p.placa =:placa")
+        .setParameter("placa", placa);
+        return (Vehiculo) jpqlQuery.getSingleResult();
     }
 
-    @Override
-    public void insertar(Vehiculo e) {
-        System.out.println("Se ha insertado en la base el Vehiculo: " + e);
-
-    }
 
     @Override
     public void eliminar(String placa) {
-        System.out.println("Se ha eliminado de la base el Vehiculo con la placa: " + placa);
-
+        this.e.createQuery("DELETE Vehiculo v WHERE p.placa =:placa ")
+        .setParameter("placa", placa);
+        
     }
 
 }
+
