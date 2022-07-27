@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "matricula")
@@ -19,7 +21,7 @@ public class Matricula {
     @Id
     @Column(name = "matr_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "matr_id_seq")
-    @SequenceGenerator(name = "matr_id_seq", sequenceName = "matr_id_seq")
+    @SequenceGenerator(name = "matr_id_seq", sequenceName = "matr_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "matr_fecha")
@@ -28,10 +30,12 @@ public class Matricula {
     @Column(name = "matr_valor")
     private BigDecimal valor;
 
-    @Column(name = "matr_propietario")
+    @ManyToOne
+    @JoinColumn(name = "matr_prop_id")
     private Propietario propietario;
 
-    @Column(name = "matr_vehiculo")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "matr_vehi_id")
     private Vehiculo vehiculo;
 
     // Set y GEt
@@ -77,9 +81,7 @@ public class Matricula {
 
     @Override
     public String toString() {
-        return "Matricula [fecha=" + fecha + ", id=" + id + ", propietario=" + propietario + ", valor=" + valor
-                + ", vehiculo=" + vehiculo + "]";
+        return "Matricula [fecha=" + fecha + ", id=" + id +  ", valor=" + valor +"]";
     }
 
-    
 }

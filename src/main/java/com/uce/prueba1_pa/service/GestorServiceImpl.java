@@ -12,8 +12,15 @@ import com.uce.prueba1_pa.modelo.Propietario;
 import com.uce.prueba1_pa.modelo.Vehiculo;
 import com.uce.prueba1_pa.repository.IMatriculaRepo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
 @Service
 public class GestorServiceImpl implements IGestorService{
+
+    private static Logger LOG =  LogManager.getLogger(GestorServiceImpl.class);
 
     @Autowired
     private IPropietarioService propietarioService;
@@ -37,15 +44,17 @@ public class GestorServiceImpl implements IGestorService{
     @Override
     public void matricularVehiculo(String cedula, String placa) {
         Propietario p = this.propietarioService.buscar(cedula);
+        LOG.info(p.toString());
         Vehiculo v = this.vehiculoService.buscar(placa);
+        LOG.info(v.toString());
         Matricula m = new Matricula();
         m.setFecha(LocalDateTime.now());
         m.setPropietario(p);
         m.setVehiculo(v);
         BigDecimal valorMatricula;
 
-        System.out.println("******************MATRICULACION******************");
-        System.out.println();
+        LOG.info("******************MATRICULACION******************");
+        LOG.info("  ");
         
         if (v.getTipo().equals("P")) {
             valorMatricula = this.pesada.calcular(v.getPrecio());
@@ -66,7 +75,7 @@ public class GestorServiceImpl implements IGestorService{
 
             
         }else{
-            System.out.println("El tipo de vehiculo es invalido, no se realizo la matricula");
+            LOG.info("El tipo de vehiculo es invalido, no se realizo la matricula");
         }
 
         

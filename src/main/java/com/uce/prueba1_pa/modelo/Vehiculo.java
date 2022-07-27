@@ -1,12 +1,16 @@
 package com.uce.prueba1_pa.modelo;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -17,8 +21,8 @@ public class Vehiculo {
     @Id
     @Column(name = "vehi_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vehi_id_seq")
-    @SequenceGenerator(name = "vehi_id_seq", sequenceName = "vehi_id_seq")
-	private Integer id;
+    @SequenceGenerator(name = "vehi_id_seq", sequenceName = "vehi_id_seq", allocationSize = 1)
+    private Integer id;
 
     @Column(name = "vehi_marca")
     private String marca;
@@ -32,44 +36,65 @@ public class Vehiculo {
     @Column(name = "vehi_precio")
     private BigDecimal precio;
 
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Matricula> matriculas;
+
     // Set y Get
     public String getMarca() {
         return marca;
     }
+
     public void setMarca(String marca) {
         this.marca = marca;
     }
+
     public String getPlaca() {
         return placa;
     }
+
     public void setPlaca(String placa) {
         this.placa = placa;
     }
+
     public String getTipo() {
         return tipo;
     }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
     public BigDecimal getPrecio() {
         return precio;
     }
+
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(List<Matricula> matriculas) {
+        this.matriculas = matriculas;
+    }
+
     @Override
     public String toString() {
-        return "Vehiculo [id=" + id + ", marca=" + marca + ", placa=" + placa + ", precio=" + precio + ", tipo=" + tipo
-                + "]";
+        return "Vehiculo [id=" + id + ", marca=" + marca + ", matriculas=" + matriculas + ", placa=" + placa
+                + ", precio=" + precio + ", tipo=" + tipo + "]";
     }
-   
+
     
-    
+
     
 }

@@ -1,12 +1,16 @@
 package com.uce.prueba1_pa.modelo;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -17,7 +21,7 @@ public class Propietario {
     @Id
     @Column(name = "prop_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prop_id_seq")
-    @SequenceGenerator(name = "prop_id_seq", sequenceName = "prop_id_seq")
+    @SequenceGenerator(name = "prop_id_seq", sequenceName = "prop_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "prop_nombre")
@@ -31,6 +35,9 @@ public class Propietario {
 
     @Column(name = "prop_fecha_naci")
     private LocalDateTime fechaNacimiento;
+
+    @OneToMany(mappedBy = "propietario", cascade =  CascadeType.ALL ,fetch = FetchType.EAGER)
+    private List<Matricula> matriculas;
 
     // Set y Get
     public String getNombre() {
@@ -72,13 +79,21 @@ public class Propietario {
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public List<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(List<Matricula> matriculas) {
+        this.matriculas = matriculas;
+    }
 
     @Override
     public String toString() {
         return "Propietario [apellido=" + apellido + ", cedula=" + cedula + ", fechaNacimiento=" + fechaNacimiento
-                + ", id=" + id + ", nombre=" + nombre + "]";
+                + ", id=" + id + ", matriculas=" + matriculas + ", nombre=" + nombre + "]";
     }
 
-    
 
+    
 }
